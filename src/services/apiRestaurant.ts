@@ -14,11 +14,23 @@ interface MenuResponse {
   data: Pizza[];
 }
 
-interface Order {
-  id: number;
-  items: { pizzaId: number; quantity: number }[];
-  total: number;
+export interface Order {
+  customer: string;
   status: string;
+  priority: boolean;
+  cart: {
+    addIngredients: string[];
+    removeIngredients: string[];
+    pizzaId: number;
+    name: string;
+    quantity: number;
+    unitPrice: number;
+    totalPrice: number;
+  }[];
+  id: string;
+  estimatedDelivery: string;
+  orderPrice: number;
+  priorityPrice: number;
 }
 
 interface OrderResponse {
@@ -36,7 +48,7 @@ export async function getMenu(): Promise<Pizza[]> {
   return data;
 }
 
-export async function getOrder(id: number): Promise<Order> {
+export async function getOrder(id: string): Promise<Order> {
   const res = await fetch(`${API_URL}/order/${id}`);
   if (!res.ok) throw new Error(`Couldn't find order #${id}`);
 

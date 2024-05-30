@@ -5,7 +5,6 @@ import MenuItem from "./MenuItem";
 
 function Menu() {
   const menu = useLoaderData() as Pizza[];
-  console.log(menu);
   return (
     <ul>
       {menu.map((pizza: Pizza) => (
