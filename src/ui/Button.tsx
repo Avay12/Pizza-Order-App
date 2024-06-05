@@ -1,10 +1,11 @@
-import { ReactNode } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 interface props {
   to?: string;
   disabled?: boolean;
   children: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   type: keyof Styles;
 }
 
@@ -14,7 +15,7 @@ interface Styles {
   secondary: string;
 }
 
-function Button({ disabled, children, to, type }: props) {
+function Button({ disabled, children, to, type, onClick }: props) {
   const base =
     'inline-block rounded-full bg-yellow-400 font-semibold uppercase text-sm tracking-wide text-stone-800 transition-colors duration-300 hover:bg-yellow-300 focus:bg-yellow-300 focus:outline-none focus:ring focus:ring-yellow-300 focus:ring-offset-2 disabled:cursor-not-allowed';
 
@@ -29,6 +30,13 @@ function Button({ disabled, children, to, type }: props) {
       <Link className={styles[type]} to={to}>
         {children}
       </Link>
+    );
+
+  if (onClick)
+    return (
+      <button onClick={onClick} disabled={disabled} className={styles[type]}>
+        {children}
+      </button>
     );
 
   return (
