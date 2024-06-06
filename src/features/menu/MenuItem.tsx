@@ -1,7 +1,8 @@
-import { useAppDispatch } from '../../store';
+import { useAppDispatch, useTypedSelector } from '../../store';
 import Button from '../../ui/Button';
 import { formatCurrency } from '../../utils/helpers';
-import { addItems } from '../cart/cartSlice';
+import { addItems, getCurrentQuantityById } from '../cart/cartSlice';
+import DeleteButton from '../cart/DeleteButton';
 
 export type Pizza = {
   id: number;
@@ -18,7 +19,10 @@ export interface MenuItemProps {
 
 function MenuItem({ pizza }: MenuItemProps) {
   const Dispatch = useAppDispatch();
+
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
+  const currentQuantity = useTypedSelector(getCurrentQuantityById(id));
+  const isInCart = currentQuantity > 0;
 
   function handleAddToCart() {
     const newItem = {
@@ -52,7 +56,9 @@ function MenuItem({ pizza }: MenuItemProps) {
             </p>
           )}
 
-          {!soldOut && (
+          {isInCart && <DeleteButton pizzaId={id} />}
+
+          {!soldOut && !isInCart && (
             <Button type="small" onClick={handleAddToCart}>
               Add to cart
             </Button>
